@@ -1,0 +1,72 @@
+.container {
+  max-width: 800px;
+  margin: 0;
+  margin-left: 20px;
+}
+
+.divroundedbox {
+    background: rgb(26, 153, 26);
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: lightgreen;
+  }
+  
+  input {
+    background-color: white;
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 18px;
+  }
+  
+  h3 {
+    font-family: "Arial", sans-serif;
+    color: darkgreen;
+    font-weight: normal;
+    font-size: 25px;
+  }
+
+  h2 {
+    font-family: "Arial", sans-serif;
+    color: darkgreen;
+    font-weight: normal;
+    font-size: 35px;
+  }
+
+  h1 {
+    font-family: "Arial", sans-serif;
+    color: darkgreen;
+    font-weight: normal;
+    font-size: 50px;
+  }
+  
+
+  .error {
+    color: red;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
