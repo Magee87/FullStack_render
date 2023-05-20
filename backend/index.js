@@ -93,7 +93,7 @@ app.get('/info', (req, res) => {
       .catch(error => next(error));
   });
 
-  app.delete('/api/persons/:id', (request, response) => {
+  app.delete('/api/persons/:id', (request, response,next) => {
     const id = request.params.id;
   
     Pack.findByIdAndRemove(id)
@@ -105,7 +105,7 @@ app.get('/info', (req, res) => {
  
 
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
   console.log('body.name')
 console.log(body.name)
@@ -121,45 +121,46 @@ console.log(body.name)
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
+  .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  console.log("SWITCH NUMBER REQUEST COMES")
-  const body = request.body
+  const { name, number } = request.body
 
-  const person = {
-    name: body.name,
-    number: body.number,
-  }
-
-  Pack.findByIdAndUpdate(request.params.id, person, { new: true })
-    .then(updatePerson => {
-      response.json(updatePerson)
+  Note.findByIdAndUpdate(
+    request.params.id, 
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }
+  ) 
+    .then(updatedperson => {
+      response.json(updatedperson)
     })
     .catch(error => next(error))
-
-
-    
 })
 
 
 app.use(errorHandler);
 
 // ERROR HANDLERI
-function errorHandler(err, req, res, next) {
- console.error(err.name);
- console.log("ERRROR NAME EEEERROROROROrO")
- console.log(err.name);
+function errorHandler(error, request, response, next) {
+ console.error(error.name);
+ console.error(error.message);
+ //console.log("ERRROR NAME EEEERROROROROrO")
+ //console.log(err.name);
 
- if (err.name === 'CastError') {
-   return res.status(400).send('<h1>400 Bad Request</h1><p>Invalid ID format.</p><img style="width: 100%;" src="https://picsum.photos/1200/600">');
+ if (error.name === 'ValidationError') {
+  return response.status(400).json({ error: error.message })
+}
+
+ if (error.name === 'CastError') {
+   return response.status(400).send('<h1>400 Bad Request</h1><p>Invalid ID format.</p><img style="width: 100%;" src="https://picsum.photos/1200/600">');
  }
 
- if (err.status === 404) {
-   return res.status(404).send('<h1>404 Not Found</h1><img src="https://picsum.photos/500/300">');
+ if (error.status === 404) {
+   return response.status(404).send('<h1>404 Not Found</h1><img src="https://picsum.photos/500/300">');
  }
 
- return res.status(500).send({ error: '<h1>Server Error</h1><img style="width: 100%;" src="https://picsum.photos/1200/600">' });
+ return response.status(500).send({ error: '<h1>Server Error</h1><img style="width: 100%;" src="https://picsum.photos/1200/600">' });
 }
 
 

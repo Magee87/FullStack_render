@@ -1,5 +1,5 @@
-POST http://localhost:3001/api/notes
+POST https://fullstack-phonebook-qfi1.onrender.com/api/persons/
 Content-Type: application/json
 
-{"content": "VS ATTACKS",
-"important": true}
+{"name": "VS",
+"number": "43434"}
