@@ -127,7 +127,7 @@ console.log(body.name)
 app.put('/api/persons/:id', (request, response, next) => {
   const { name, number } = request.body
 
-  Note.findByIdAndUpdate(
+  Pack.findByIdAndUpdate(
     request.params.id, 
     { name, number },
     { new: true, runValidators: true, context: 'query' }
