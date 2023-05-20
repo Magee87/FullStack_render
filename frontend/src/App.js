@@ -236,7 +236,7 @@ const App = () => {
       <Notification message={removeMessage} />
        <SearchResults persons={persons} searchByName={searchByName} handleRemovePerson={handleRemovePerson}/>
       <hr></hr>
-      <center>JSON file based. Created by Jesse K</center>
+      <center> Created by Jesse K</center>
       <hr></hr>
       <hr></hr>
 
