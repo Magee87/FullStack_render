@@ -32,13 +32,16 @@ fs.readFile('db.json', 'utf8', (err, data) => {
   }
 });
 */
-startServer();
 
 
-function startServer() {
+
+
   app.use(express.json());
   app.use(cors());
-  app.use(express.static('build'))
+  app.use(express.static('build'));
+ 
+
+
 
 // MORGAN PART
   morgan.token('content', (req, res) => {
@@ -74,21 +77,20 @@ app.get('/info', (req, res) => {
 
   });
 
-  app.get('/api/persons/:id', (request, response) => {
+  app.get('/api/persons/:id', (request, response, next) => {
     const id = request.params.id;
-    
+
     Pack.findById(id)
       .then(person => {
         if (person) {
           response.json(person);
         } else {
-          response.status(404).send('<h1>404 Not Found</h1><p>Please check the ID number again.</p><img src="https://picsum.photos/500/300">');
+          const err = new Error('Person not found');
+          err.status = 404;
+          throw err;
         }
       })
-      .catch(error => {
-        console.error(error);
-        response.status(500).send('<h1>Internal Server Error 500</h1></p><img style="width: 100%;" src="https://picsum.photos/1200/600">');
-      });
+      .catch(error => next(error));
   });
 
   app.delete('/api/persons/:id', (request, response) => {
@@ -98,47 +100,10 @@ app.get('/info', (req, res) => {
       .then(() => {
         response.status(204).end();
       })
-      .catch(error => {
-        console.error(error);
-        response.status(500).json({ error: 'Server error' });
-      });
+      .catch(error => next(error));
   });
+ 
 
-/*
-  const generateId = () => {
-    const maxId = persons.length > 0
-      ? Math.max(...persons.map(n => n.id))
-      : 0;
-    return maxId + 1;
-  };
-
-
-  app.post('/api/persons', (request, response) => {
-    const body = request.body;
-    const nameExist = persons.find(person => person.name === body.name);
-    if (nameExist) {
-      return response.status(400).json({ 
-        error: 'Name is already in the phonebook' 
-      });
-    }
-
-    if (!body.name || !body.number) {
-      return response.status(400).json({ 
-        error: 'Name or number is missing' 
-      });
-    }
-
-    const person = {
-      name: body.name,
-      number: body.number || "no number added",
-      id: generateId(),
-    };
-
-    persons = persons.concat(person);
-
-    response.json(person);
-  });
-*/
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -157,11 +122,48 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+  console.log("SWITCH NUMBER REQUEST COMES")
+  const body = request.body
 
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Pack.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatePerson => {
+      response.json(updatePerson)
+    })
+    .catch(error => next(error))
+
+
+    
+})
+
+
+app.use(errorHandler);
+
+// ERROR HANDLERI
+function errorHandler(err, req, res, next) {
+ console.error(err.name);
+ console.log("ERRROR NAME EEEERROROROROrO")
+ console.log(err.name);
+
+ if (err.name === 'CastError') {
+   return res.status(400).send('<h1>400 Bad Request</h1><p>Invalid ID format.</p><img style="width: 100%;" src="https://picsum.photos/1200/600">');
+ }
+
+ if (err.status === 404) {
+   return res.status(404).send('<h1>404 Not Found</h1><img src="https://picsum.photos/500/300">');
+ }
+
+ return res.status(500).send({ error: '<h1>Server Error</h1><img style="width: 100%;" src="https://picsum.photos/1200/600">' });
+}
 
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-}
+

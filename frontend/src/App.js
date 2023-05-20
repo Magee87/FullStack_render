@@ -36,7 +36,7 @@ const NewPerson = ({ persons, setPersons, newName, setNewName, newPhone, setNewP
   };
 
   const handlePhonenumberChange = (name, newPhone) => {
-    /*
+    
     const personObject = persons.find((person) => person.name === name);
     const updatedPersonObject = {
       ...personObject,
@@ -44,8 +44,13 @@ const NewPerson = ({ persons, setPersons, newName, setNewName, newPhone, setNewP
     };
     
     if (window.confirm(`${personObject.name} is in phonebook. replace old number (${personObject.number}) with new number: ${newPhone}?`)) {
-      server.switchnumber(personObject.id, updatedPersonObject)
+      console.log("SWITCHHH NUMBERLARGKLFAGDÖLkgfdkÖFGDÖKLdfgsÖLKödFGKLDFSGKLKÖFDLGS")
+      console.log(personObject.id)
+      console.log(updatedPersonObject)
+      server.switchNumber(personObject.id, updatedPersonObject)
         .then(() => {
+
+
           const updatedPersons = persons.map(person => {
             if (person.id === personObject.id) {
               return { ...person, number: newPhone };
@@ -62,8 +67,8 @@ const NewPerson = ({ persons, setPersons, newName, setNewName, newPhone, setNewP
           
         })
     }
-    */
-   alert("You cant change number atm, we try to fix it as soon as possible. :P")
+    
+   /*alert("You cant change number atm, we try to fix it as soon as possible. :P")*/
   };
 
 
@@ -207,6 +212,10 @@ const App = () => {
     )
   }
   
+
+
+
+
   return (
     <div>
        <NotificationError message={errorMessage} />
