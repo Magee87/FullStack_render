@@ -17,13 +17,23 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const pbmongoSchema = new mongoose.Schema({
-  name:{  
-    type: String,
-    minlength: 3,
-    required: true},
-  number: String
-})
+  const pbmongoSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      minlength: 3,
+      required: true
+    },
+    number: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          const regex = /^\d{2,3}-\d+$/;
+          return regex.test(value);
+        },
+        message: 'Invalid phone number format, need to use 2-3 numbers - numbers example: 040-12312333'
+      }
+    }
+  });
 
 pbmongoSchema.set('toJSON', {
     transform: (document, returnedObject) => {

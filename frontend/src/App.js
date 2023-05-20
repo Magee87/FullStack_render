@@ -30,7 +30,9 @@ const NewPerson = ({ persons, setPersons, newName, setNewName, newPhone, setNewP
         setPersons(persons.concat(newPerson));
         setNewName('');
         setNewPhone('');
-      })
+      }).catch((error) => {
+        alert(`Error: ${error.response.data.error}`);
+      });
 
     }
   };
