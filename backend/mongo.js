@@ -23,31 +23,32 @@ const pbmongoSchema = new mongoose.Schema({
 const Pack = mongoose.model('person', pbmongoSchema)
 
 if (process.argv.length < 5) {
-    mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => {
-        console.log('Phonebook:');
-        Pack.find({})
-          .then(people => {
-            people.forEach(person => {
-              console.log(person.name, person.number);
-            });
-            // console.log("Connection closed to Mongo");
-            mongoose.connection.close();
-            process.exit(1);
+  mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+      console.log('Phonebook:')
+      Pack.find({})
+        .then(people => {
+          people.forEach(person => {
+            console.log(person.name, person.number)
           })
-      })
-
-  } else {
-
-    
-    const newperson = new Pack({
-      name:name,
-      number: number,
+          // console.log("Connection closed to Mongo");
+          mongoose.connection.close()
+          process.exit(1)
+        })
     })
-    
-    newperson.save().then(result => {
-      console.log(`added ${name} number ${number} to phonebook!`)
-      mongoose.connection.close()
-    })
-  }
+
+} else {
+
+
+  const newperson = new Pack({
+    name:name,
+    number: number,
+  })
+
+  newperson.save().then(() => {
+    console.log(`added ${name} number ${number} to phonebook!`)
+    mongoose.connection.close()
+  })
+
+}
 
