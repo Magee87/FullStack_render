@@ -107,8 +107,9 @@ app.get('/info', (req, res) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-
-  if (body.name === undefined) {
+  console.log('body.name')
+console.log(body.name)
+  if (body.name === undefined || body.name === '' ) {
     return response.status(400).json({ error: 'content missing' })
   }
 
