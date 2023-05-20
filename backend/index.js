@@ -87,7 +87,7 @@ app.get('/info', (req, res) => {
       })
       .catch(error => {
         console.error(error);
-        response.status(500).send('<h1>Internal Server Error 500</h1></p><img src="https://picsum.photos/500/300">');
+        response.status(500).send('<h1>Internal Server Error 500</h1></p><img style="width: 100%;" src="https://picsum.photos/1200/600">');
       });
   });
 
