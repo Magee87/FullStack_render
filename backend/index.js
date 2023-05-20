@@ -75,14 +75,20 @@ app.get('/info', (req, res) => {
   });
 
   app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id);
-    const person = persons.find(p => p.id === id);
-  
-    if (person) {
-      response.json(person);
-    } else {
-      response.status(404).send('<h1>404 Not Found</h1><p>Please check id number again what u were looking</p><img src="https://picsum.photos/500/300">');
-    }
+    const id = request.params.id;
+    
+    Pack.findById(id)
+      .then(person => {
+        if (person) {
+          response.json(person);
+        } else {
+          response.status(404).send('<h1>404 Not Found</h1><p>Please check the ID number again.</p><img src="https://picsum.photos/500/300">');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        response.status(500).send('<h1>Internal Server Error 500</h1></p><img src="https://picsum.photos/500/300">');
+      });
   });
 
   app.delete('/api/persons/:id', (request, response) => {
