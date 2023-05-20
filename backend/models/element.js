@@ -25,6 +25,7 @@ mongoose.connect(url)
     },
     number: {
       type: String,
+      minlength: 8,
       validate: {
         validator: function (value) {
           const regex = /^\d{2,3}-\d+$/;
